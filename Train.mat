@@ -1,0 +1,36 @@
+% %% 1.Voice Training
+% clear all;
+% close all;
+% clc;
+ %% create a recorder object
+ recorder = audiorecorder(16000,8,1 );
+% %16000 samples,8 bits, 2 channels
+ %%record user's voice for 3 sec
+ disp("Please Record Your Voice");
+ drawnow();
+ pause(1);
+ recordblocking(recorder,3);
+ play(recorder);
+ data = getaudiodata(recorder);
+ plot(data);
+
+%% Feature Extraction
+figure;
+f=VoiceMFCC("Asmita.wav");  OR VoiceFeature(data);
+%%disp(f);
+%% Save users data
+Cno = input('Enter the user C No. :');
+try
+    load database;
+    F=[F;f];
+    C=[C;Cno];
+    save database F C
+
+catch
+
+    F=f;
+    C=Cno;
+    save database F C
+end
+msgbox('your voice is registered')
+
