@@ -1,0 +1,65 @@
+%% 3.Voice Testing
+clear all;
+close all;
+clc;
+% %% create a recorder object
+ recorder = audiorecorder(16000,8,1 );
+% %16000 samples,8 bits, 2 channels
+% %%record user's voice for 5 sec
+ disp("Please Record Your Voice");
+ drawnow();
+ pause(1);
+ recordblocking(recorder,5);
+ play(recorder);
+ data = getaudiodata(recorder);
+ plot(data)
+
+%% Feature Extraction
+figure;
+f=VoiceMFCC("Asmita.wav"); OR VoiceFeature(data);
+%% Classify
+load database
+D=[];
+for(i=1:size(F))
+
+    d=sum(abs(F(i)-f));
+
+    D=[D d];
+end
+%% smallest distance
+sm=Inf;
+ind=-1;
+for(i=1:length(D))
+    if(D(i)<sm)
+        sm=D(i);
+        ind=i;
+    end
+end
+detected_class=C(ind);
+disp('the detected class is:');
+disp(detected_class);
+
+function [avg]=VoiceMFCC(data)
+
+[audioIn,fs] = audioread(data);
+figure();
+win = hann(1024,"periodic");
+plot(win);
+S = stft(audioIn,"Window",win,"OverlapLength",512,"Centered",false);
+coeffs = mfcc(S,fs,"LogEnergy","Ignore");
+%coeffs = mfcc(audioIn,fs);
+MFCC= coeffs(1:15);
+disp("MFCC values are: ");
+plot(MFCC);
+disp(MFCC);
+avg=sum(MFCC)/15;
+disp("Average is :");
+disp(avg);
+
+%% 2.Voice Features
+function [xPitch]=VoiceFeatures(data)
+F=fft(data(:,1));
+plot(real(F));
+m=max(real(F));
+xPitch=find(real(F)==m,1)
+
