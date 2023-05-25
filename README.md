@@ -10,3 +10,9 @@ Speaker Recognition using MFCC features
 •	To Extract the feature MFCC we will be using different digital signal processing such as FFT and DCT.
 
 
+
+
+****Block Diagram****
+
+![image](https://github.com/Asmita-Gurav/Speaker-Recognition/assets/134598261/399676a2-3541-4eb8-a1b0-6b590e8d8da5)
+
